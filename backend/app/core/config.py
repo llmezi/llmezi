@@ -18,10 +18,13 @@ class Settings(BaseSettings):
 		extra='ignore',
 	)
 	ENVIRONMENT: Literal['local', 'staging', 'production'] = 'local'
+	JWT_ALGORITHM: str = 'HS256'
 	# run openssl rand -base64 32 to generate
 	JWT_SECRET: str = secrets.token_urlsafe(32)
 	# run openssl rand -base64 32 to generate
 	JWT_REFRESH_SECRET: str = secrets.token_urlsafe(32)
+	# JWT audience claim - identifies intended recipients
+	JWT_AUDIENCE: str = 'llmezi-api'
 	# 30 minutes
 	ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
 	# 60 minutes * 24 hours * 28 days

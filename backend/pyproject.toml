@@ -7,7 +7,9 @@ requires-python = ">=3.12"
 dependencies = [
     "alembic<2.0.0,>=1.15.2",
     "fastapi[all]<1.0.0,>=0.115.12",
+    "passlib[bcrypt]<2.0.0,>=1.7.4",
     "psycopg[binary]<4.0.0,>=3.2.7",
+    "pyjwt<3.0.0,>=2.10.1",
     "sentry-sdk[fastapi]<3.0.0,>=2.27.0",
     "sqlmodel<1.0.0,>=0.0.24",
     "strawberry-graphql[fastapi]<1.0.0,>=0.266.0",
