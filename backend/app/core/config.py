@@ -2,6 +2,7 @@ import secrets
 from typing import Literal
 
 from pydantic import (
+	EmailStr,
 	HttpUrl,
 	PostgresDsn,
 	computed_field,
@@ -53,6 +54,15 @@ class Settings(BaseSettings):
 			port=self.POSTGRES_PORT,
 			path=self.POSTGRES_DB,
 		)
+
+	SMTP_TLS: bool = True
+	SMTP_SSL: bool = False
+	SMTP_PORT: int = 587
+	SMTP_HOST: str | None = None
+	SMTP_USER: str | None = None
+	SMTP_PASSWORD: str | None = None
+	EMAILS_FROM_EMAIL: EmailStr | None = None
+	EMAILS_FROM_NAME: EmailStr | None = None
 
 
 settings = Settings()  # type: ignore
