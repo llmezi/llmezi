@@ -6,8 +6,9 @@ from sqlmodel import Field, Relationship, SQLModel
 
 from app.utils.datetime import datetime_utcnow
 
-# Add type checking block for RefreshToken
+# Add type checking blocks
 if TYPE_CHECKING:
+	from app.models.auth_code import AuthCode
 	from app.models.refresh_token import RefreshToken
 
 
@@ -22,5 +23,6 @@ class User(SQLModel, table=True):
 	created_at: datetime = Field(default_factory=datetime_utcnow)
 	updated_at: datetime = Field(default_factory=datetime_utcnow)
 
-	# Add relationship to RefreshToken
+	# Add relationships
 	refresh_tokens: List['RefreshToken'] = Relationship(back_populates='user')
+	auth_codes: List['AuthCode'] = Relationship(back_populates='user')

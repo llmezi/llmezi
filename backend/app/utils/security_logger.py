@@ -13,7 +13,7 @@ console_handler.setLevel(logging.INFO)
 
 # Create a custom formatter that includes more details
 formatter = logging.Formatter(
-	'{"timestamp": "%(asctime)s", "level": "%(levelname)s", "event_type": "%(event_type)s", "message": "%(message)s", "details": %(details)s}',
+	'{"timestamp": "%(asctime)s", "level": "%(levelname)s", "event_type": "%(event_type)s", "message": "%(msg)s", "details": %(details)s}',
 	datefmt='%Y-%m-%d %H:%M:%S',
 )
 console_handler.setFormatter(formatter)
@@ -39,7 +39,8 @@ class SecurityLogger:
 		# Add a unique ID for each security event for traceability
 		details['event_id'] = str(uuid.uuid4())
 
-		return {'event_type': event_type, 'message': message, 'details': json.dumps(details)}
+		# Use 'msg' instead of 'message' to avoid collision with the built-in message attribute
+		return {'event_type': event_type, 'details': json.dumps(details)}
 
 	@staticmethod
 	def log_login_attempt(
@@ -121,11 +122,13 @@ class SecurityLogger:
 		logger.warning(message, extra=SecurityLogger._format_log(event_type, message, log_details))
 
 	@staticmethod
-	def log_security_event(
-		event_type: str, message: str, details: Optional[Dict[str, Any]] = None
-	) -> None:
+	def log_event(event_type: str, success: bool, details: Optional[Dict[str, Any]] = None) -> None:
 		"""Generic method to log any security event"""
-		logger.info(message, extra=SecurityLogger._format_log(event_type, message, details))
+		log_details = details or {}
+		log_details['success'] = success
+
+		message = f'Security event: {event_type}'
+		logger.info(message, extra=SecurityLogger._format_log(event_type, message, log_details))
 
 
 # Export a singleton instance

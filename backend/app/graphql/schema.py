@@ -1,11 +1,28 @@
 import strawberry
 
-from .resolvers.generic_resolver import GenericQuery
+from app.graphql.resolvers.auth_resolver import AuthMutation
+from app.graphql.resolvers.generic_resolver import GenericQuery
+from app.graphql.resolvers.user_resolver import UserMutation, UserQuery
+from app.graphql.utils import ErrorExtension
 
 
 @strawberry.type
-class CombinedQuery(GenericQuery):  # Inherit from all query types
+class Query(GenericQuery, UserQuery):
+	"""Root Query type that combines all query types."""
+
 	pass
 
 
-schema = strawberry.Schema(query=CombinedQuery)
+@strawberry.type
+class Mutation:
+	"""Root Mutation type that combines all mutation types."""
+
+	auth: AuthMutation = strawberry.field(resolver=lambda: AuthMutation())
+	user: UserMutation = strawberry.field(resolver=lambda: UserMutation())
+
+
+schema = strawberry.Schema(
+	query=Query,
+	mutation=Mutation,
+	extensions=[ErrorExtension],
+)

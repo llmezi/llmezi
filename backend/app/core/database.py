@@ -10,7 +10,7 @@ engine = create_engine(
 	pool_size=settings.DATABASE_POOL_SIZE,
 	max_overflow=settings.DATABASE_MAX_OVERFLOW,
 	pool_timeout=settings.DATABASE_POOL_TIMEOUT,
-	echo=settings.ENVIRONMENT == 'local',  # Enable SQL echo in local/dev
+	# echo=settings.ENVIRONMENT == 'local',  # Enable SQL echo in local/dev
 )
 
 
