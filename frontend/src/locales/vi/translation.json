@@ -1,0 +1,29 @@
+{
+  "app": {
+    "title": "LLMeZi",
+    "description": "Trợ lý AI của bạn"
+  },
+  "common": {
+    "loading": "Đang tải...",
+    "error": "Đã xảy ra lỗi",
+    "success": "Thành công",
+    "cancel": "Hủy",
+    "save": "Lưu",
+    "delete": "Xóa",
+    "edit": "Chỉnh sửa",
+    "back": "Quay lại"
+  },
+  "auth": {
+    "login": "Đăng nhập",
+    "register": "Đăng ký",
+    "logout": "Đăng xuất",
+    "email": "Email",
+    "password": "Mật khẩu",
+    "forgotPassword": "Quên mật khẩu?",
+    "loginSuccess": "Đăng nhập thành công"
+  },
+  "home": {
+    "welcome": "Chào mừng đến với LLMeZi",
+    "getStarted": "Bắt đầu"
+  }
+}

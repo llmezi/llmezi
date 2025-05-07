@@ -1,0 +1,36 @@
+{
+  "app": {
+    "title": "llmezi"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "back": "Back",
+    "setting": "Setting"
+  },
+  "theme": {
+    "label": "Theme",
+    "systemTheme": "System",
+    "lightTheme": "Light",
+    "darkTheme": "Dark"
+  },
+  "auth": {
+    "login": "Login",
+    "loginSubheader": "Please enter your credentials to continue.",
+    "register": "Register",
+    "logout": "Logout",
+    "email": "Email",
+    "password": "Password",
+    "forgotPassword": "Forgot Password?",
+    "loginSuccess": "Logged in successfully"
+  },
+  "home": {
+    "welcome": "Welcome to LLMeZi",
+    "getStarted": "Get Started"
+  }
+}
