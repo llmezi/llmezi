@@ -57,6 +57,7 @@ class AuthService:
 		self.email_service = EmailService()
 		# Secret key for HMAC token operations
 		self._token_secret = settings.JWT_SECRET.encode('utf-8')
+		self._max_refresh_tokens_per_user = 10
 
 	# 1. Password Methods
 	def get_password_hash(self, password: str) -> str:
@@ -161,6 +162,7 @@ class AuthService:
 	) -> str:
 		"""
 		Create a JWT refresh token for a user and store its hash in the database.
+		Limits the number of active refresh tokens per user based on self._max_refresh_tokens_per_user.
 
 		Args:
 			user_id: The user's ID to associate with the token
@@ -201,6 +203,32 @@ class AuthService:
 			user_id=user_id,
 			expires_at=expire,  # Keep DB expiry for potential cleanup/secondary checks
 		)
+
+		# Enforce maximum number of refresh tokens per user
+		# 1. Get all current refresh tokens for this user
+		statement = (
+			select(RefreshToken)
+			.where(RefreshToken.user_id == user_id)
+			.order_by(RefreshToken.expires_at.desc())
+		)
+		existing_tokens = self.db.exec(statement).all()
+
+		# 2. If the number of tokens (including the new one) exceeds the limit, delete oldest tokens
+		if len(existing_tokens) >= self._max_refresh_tokens_per_user:
+			# Calculate how many tokens to remove to stay under the limit (considering we're adding one)
+			tokens_to_remove = len(existing_tokens) - self._max_refresh_tokens_per_user + 1
+
+			# Get the tokens to delete (the oldest ones)
+			tokens_to_delete = existing_tokens[-tokens_to_remove:]
+
+			# Delete the oldest tokens
+			for old_token in tokens_to_delete:
+				self.db.delete(old_token)
+				security_logger.log_token_invalidation(
+					'refresh', user_id=str(user_id), details={'reason': 'max_tokens_limit_enforced'}
+				)
+
+		# 3. Add the new token
 		self.db.add(db_refresh_token)
 		self.db.commit()
 		self.db.refresh(db_refresh_token)
