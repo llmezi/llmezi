@@ -17,6 +17,17 @@ class UserService:
 		self.db = db
 		self.auth_service = AuthService(db)
 
+	def is_first_admin_created(self) -> bool:
+		"""
+		Check if the first admin user has already been created.
+
+		Returns:
+			bool: True if any user exists in the system, False otherwise
+		"""
+		statement = select(User)
+		existing_user = self.db.exec(statement).first()
+		return existing_user is not None
+
 	def create_first_admin(self, name: str, email: str, password: str) -> tuple[User, str, str]:
 		"""
 		Create the first admin user in the system, only if no users exist.
@@ -61,4 +72,4 @@ class UserService:
 		access_token = self.auth_service.create_access_token(subject=user.id)
 		refresh_token = self.auth_service.create_refresh_token(user_id=user.id)
 
-		return user, access_token, refresh_token.token
+		return user, access_token, refresh_token

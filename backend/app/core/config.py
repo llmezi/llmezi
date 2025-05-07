@@ -35,6 +35,9 @@ class Settings(BaseSettings):
 	# optional
 	SENTRY_DSN: HttpUrl | None = None
 
+	# Frontend URL for CORS configuration
+	FRONTEND_URL: str = 'http://localhost:5173'
+
 	POSTGRES_SERVER: str
 	POSTGRES_PORT: int = 5432
 	POSTGRES_USER: str
@@ -56,6 +59,18 @@ class Settings(BaseSettings):
 			port=self.POSTGRES_PORT,
 			path=self.POSTGRES_DB,
 		)
+
+	@computed_field  # type: ignore[prop-decorator]
+	@property
+	def CORS_ORIGINS(self) -> list[str]:
+		"""
+		Returns a list of allowed origins for CORS.
+		In local environment, allows all origins for easier development.
+		In other environments, uses the configured FRONTEND_URL.
+		"""
+		if self.ENVIRONMENT == 'local':
+			return ['*']
+		return [self.FRONTEND_URL] if self.FRONTEND_URL else []
 
 	SMTP_TLS: bool = True
 	SMTP_SSL: bool = False

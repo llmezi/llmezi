@@ -1,3 +1,6 @@
+import base64
+import hashlib
+import hmac
 import random
 import string
 import uuid
@@ -52,6 +55,8 @@ class AuthService:
 		# Using bcrypt directly with rounds parameter to avoid passlib bcrypt version issues
 		self.pwd_context = CryptContext(schemes=['bcrypt'], deprecated='auto', bcrypt__rounds=12)
 		self.email_service = EmailService()
+		# Secret key for HMAC token operations
+		self._token_secret = settings.JWT_SECRET.encode('utf-8')
 
 	# 1. Password Methods
 	def get_password_hash(self, password: str) -> str:
@@ -81,19 +86,25 @@ class AuthService:
 
 	def hash_token(self, token: str) -> str:
 		"""
-		Generate a hash of a token using the same hashing mechanism as passwords.
+		Generate a hash of a token using HMAC-SHA256, which is much faster than bcrypt.
 
 		Args:
 			token: The token string to hash
 
 		Returns:
-			The hashed token string
+			The hashed token string (base64 encoded)
 		"""
-		return self.pwd_context.hash(token)
+		# Create an HMAC signature using SHA-256
+		digest = hmac.new(
+			key=self._token_secret, msg=token.encode('utf-8'), digestmod=hashlib.sha256
+		).digest()
+
+		# Return base64 encoded string for storage
+		return base64.b64encode(digest).decode('utf-8')
 
 	def verify_token_hash(self, plain_token: str, hashed_token: str) -> bool:
 		"""
-		Verify a plain token against a hashed token.
+		Verify a plain token against a hashed token using constant-time comparison.
 
 		Args:
 			plain_token: The plain token to verify
@@ -102,7 +113,11 @@ class AuthService:
 		Returns:
 			True if the token matches, False otherwise
 		"""
-		return self.pwd_context.verify(plain_token, hashed_token)
+		# Calculate the hash of the provided token
+		expected_hash = self.hash_token(plain_token)
+
+		# Use a constant-time comparison to prevent timing attacks
+		return hmac.compare_digest(expected_hash, hashed_token)
 
 	# 2. Token Creation Methods
 	def create_access_token(

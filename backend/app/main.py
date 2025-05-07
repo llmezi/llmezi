@@ -1,5 +1,6 @@
 import sentry_sdk
 from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
 from strawberry.fastapi import GraphQLRouter
 
 from app.core.config import settings
@@ -24,6 +25,16 @@ graphql_app = GraphQLRouter(
 )
 
 app = FastAPI(title='llmezi api', docs_url=None, redoc_url=None)
+
+# Configure CORS middleware
+app.add_middleware(
+	CORSMiddleware,
+	allow_origins=settings.CORS_ORIGINS,
+	allow_credentials=True,
+	allow_methods=['*'],
+	allow_headers=['*'],
+)
+
 app.include_router(graphql_app, prefix='/graphql')
 
 
