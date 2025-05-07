@@ -9,6 +9,7 @@ import { initializeApollo } from './libs/apolloClient';
 import theme from './libs/theme';
 import HomePage from './pages/home';
 import LoginPage from './pages/login';
+import RegisterPage from './pages/register';
 
 function App() {
   const apolloClient = initializeApollo();
@@ -25,6 +26,7 @@ function App() {
               {/* Unauthenticated Routes */}
               <Route element={<AuthLayout />}>
                 <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
               </Route>
               {/*  */}
               <Route element={<AppLayout />}>

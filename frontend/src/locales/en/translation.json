@@ -22,12 +22,28 @@
   "auth": {
     "login": "Login",
     "loginSubheader": "Please enter your credentials to continue.",
+    "loginError": "An error occurred during the login process.",
     "register": "Register",
+    "registerSubheader": "Please create the first admin account to continue.",
+    "needAdminWarning": "Currently, there are no users in the system. Please register a user first. That account will be an administrator.",
+    "needAdminWarningLink": "Click here to start the process!",
+    "noNeedAdminWarning": "The system already has users. Please log in with the admin account and invite members.",
+    "noNeedAdminWarningLink": "Back to login page!",
     "logout": "Logout",
+    "name": "Name",
     "email": "Email",
     "password": "Password",
     "forgotPassword": "Forgot Password?",
-    "loginSuccess": "Logged in successfully"
+    "loginSuccess": "Logged in successfully",
+    "validator": {
+      "nameRequired": "Name is required",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Please enter a valid email address",
+      "passwordRequired": "Password is required",
+      "passwordTooShort": "Password must be at least 8 characters long",
+      "passwordSpaces": "Password cannot begin or end with a blank space",
+      "passwordComplexity": "Password must contain a combination of letters and at least one number or symbol"
+    }
   },
   "home": {
     "welcome": "Welcome to LLMeZi",

@@ -1,3 +1,4 @@
+import { gql, useMutation } from '@apollo/client';
 import { createContext, ReactNode, useContext, useMemo } from 'react';
 import { useNavigate } from 'react-router';
 import { useLocalStorage } from './useLocalStorage';
@@ -18,12 +19,22 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
+const LOGOUT_MUTATION = gql`
+  mutation Logout($refreshToken: String!) {
+    auth {
+      logout(refreshToken: $refreshToken)
+    }
+  }
+`;
+
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [accessToken, setAccessToken] = useLocalStorage<string | null>('accessToken', null);
   const [refreshToken, setRefreshToken] = useLocalStorage<string | null>('refreshToken', null);
   const [userId, setUserId] = useLocalStorage<string | null>('userId', null);
 
   const navigate = useNavigate();
+
+  const [logoutMutation, { loading: isLoggingOut }] = useMutation(LOGOUT_MUTATION);
 
   // call this function when you want to authenticate the user
   const login = async ({
@@ -41,12 +52,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   // call this function to sign out logged in user
-  const logout = (): void => {
+  const logout = (): Promise<void> => {
+    logoutMutation({ variables: { refreshToken } });
+
     setAccessToken(null);
     setRefreshToken(null);
     setUserId(null);
-
-    navigate('/login', { replace: true });
   };
 
   const value = useMemo<AuthContextType>(

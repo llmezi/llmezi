@@ -33,7 +33,15 @@ const graphqlUri = backendUrl.endsWith('/')
  */
 function getAccessToken() {
   if (typeof window === 'undefined') return null;
-  return localStorage.getItem('accessToken');
+
+  try {
+    const token = localStorage.getItem('accessToken');
+    // No need to parse - tokens should be stored as raw strings
+    return token;
+  } catch (e) {
+    console.error('Error retrieving access token:', e);
+    return null;
+  }
 }
 
 /**
@@ -41,7 +49,15 @@ function getAccessToken() {
  */
 function getRefreshToken() {
   if (typeof window === 'undefined') return null;
-  return localStorage.getItem('refreshToken');
+
+  try {
+    const token = localStorage.getItem('refreshToken');
+    // No need to parse - tokens should be stored as raw strings
+    return token;
+  } catch (e) {
+    console.error('Error retrieving refresh token:', e);
+    return null;
+  }
 }
 
 /**
@@ -110,6 +126,9 @@ async function refreshAccessToken() {
     throw new Error('No refresh token available');
   }
 
+  // Ensure no quotes are included in the token
+  const sanitizedToken = refreshToken.replace(/^"|"$/g, '');
+
   try {
     const response = await fetch(graphqlUri, {
       method: 'POST',
@@ -117,13 +136,18 @@ async function refreshAccessToken() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        query: `mutation RefreshToken($token: String!) {
-          refreshToken(token: $token) {
-            accessToken
-            refreshToken
+        query: `mutation RefreshToken($input: RefreshTokenInput!) {
+          auth {
+            refreshToken(input: $input) {
+              accessToken
+              refreshToken
+              user {
+                id
+              }
+            }
           }
         }`,
-        variables: { token: refreshToken },
+        variables: { input: { refreshToken: sanitizedToken } },
       }),
     });
 
@@ -133,7 +157,7 @@ async function refreshAccessToken() {
       throw new Error(result.errors[0]?.message || 'Token refresh failed');
     }
 
-    const tokens = result.data?.refreshToken;
+    const tokens = result.data?.auth?.refreshToken;
     if (!tokens?.accessToken || !tokens?.refreshToken) {
       throw new Error('Invalid token response');
     }
