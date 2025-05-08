@@ -21,6 +21,13 @@
     "lightTheme": "Light",
     "darkTheme": "Dark"
   },
+  "menu": {
+    "home": "Assistans",
+    "documents": "Documents",
+    "images": "Images",
+    "tools": "Tools",
+    "settings": "Settings"
+  },
   "auth": {
     "login": "Login",
     "loginSubheader": "You can log in using your password or request an OTP via email.",
