@@ -28,7 +28,7 @@ const REGISTER_FIRST_ADMIN_MUTATION = gql`
 
 function RegisterPage() {
   const { t } = useTranslation();
-  const { register, login } = useAuth();
+  const { login } = useAuth();
   const { isFirstAdminCreated, loading: isFirstAdminCheckLoading } = useFirstAdminCheck();
 
   const [registerFirstAdmin, { loading: isRegistering, error: mutationError }] = useMutation(

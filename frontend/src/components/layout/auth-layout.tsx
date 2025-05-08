@@ -22,7 +22,7 @@ function AuthLayout() {
     setDrawerOpen(!drawerOpen);
   };
 
-  if (!!isLoggedIn) {
+  if (isLoggedIn) {
     return <Navigate to="/" />;
   }
 

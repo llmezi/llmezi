@@ -1,6 +1,6 @@
+/* eslint-disable  react-hooks/exhaustive-deps, react-refresh/only-export-components */
 import { gql, useMutation } from '@apollo/client';
 import { createContext, ReactNode, useContext, useMemo } from 'react';
-import { useNavigate } from 'react-router';
 import { useLocalStorage } from './useLocalStorage';
 
 interface AuthContextType {
@@ -32,9 +32,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [refreshToken, setRefreshToken] = useLocalStorage<string | null>('refreshToken', null);
   const [userId, setUserId] = useLocalStorage<string | null>('userId', null);
 
-  const navigate = useNavigate();
-
-  const [logoutMutation, { loading: isLoggingOut }] = useMutation(LOGOUT_MUTATION);
+  const [logoutMutation] = useMutation(LOGOUT_MUTATION);
 
   // call this function when you want to authenticate the user
   const login = async ({

@@ -52,6 +52,7 @@ const localStorageUtils = {
         try {
           return JSON.parse(item) as T;
         } catch (e) {
+          console.error(e);
           console.warn(`Value for key "${key}" couldn't be parsed as JSON, returning as string`);
           return item as unknown as T;
         }
