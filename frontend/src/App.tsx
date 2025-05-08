@@ -7,6 +7,7 @@ import AuthLayout from './components/layout/auth-layout';
 import { AuthProvider } from './hooks/useAuth';
 import { initializeApollo } from './libs/apolloClient';
 import theme from './libs/theme';
+import ForgotPasswordPage from './pages/forgot-password';
 import HomePage from './pages/home';
 import LoginPage from './pages/login';
 import RegisterPage from './pages/register';
@@ -27,6 +28,7 @@ function App() {
               <Route element={<AuthLayout />}>
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
+                <Route path="/forgot-password" element={<ForgotPasswordPage />} />
               </Route>
               {/*  */}
               <Route element={<AppLayout />}>

@@ -359,9 +359,11 @@ function LoginWithPassword({ t }: PasswordLoginFormProps): JSX.Element {
           {t('common.submit')}
         </Button>
 
-        <Link href="#" variant="body2">
-          {t('auth.forgotPassword')}
-        </Link>
+        <div className="mx-auto text-center">
+          <Link href="/forgot-password" variant="body2">
+            {t('auth.forgotPassword')}
+          </Link>
+        </div>
       </Box>
     </>
   );
