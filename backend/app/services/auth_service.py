@@ -658,13 +658,13 @@ class AuthService:
 			user = self.db.exec(statement).first()
 
 			# Generate email content based on purpose
-			subject = 'Your Authentication Code'
+			subject = 'Your llmezi authentication code'
 			html_content, text_content = get_auth_code_email(
 				user_name=user.name, code=code, expires_minutes=settings.AUTH_CODE_EXPIRE_MINUTES
 			)
 
 			if purpose == AuthCodePurpose.PASSWORD_RESET:
-				subject = 'Your Password Reset Code'
+				subject = 'Your llmezi password reset code'
 				html_content, text_content = get_password_reset_email(
 					user_name=user.name,
 					code=code,
