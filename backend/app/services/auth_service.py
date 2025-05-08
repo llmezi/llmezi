@@ -776,6 +776,30 @@ class AuthService:
 
 		# Mark the code as used
 		matching_code.is_used = True
+
+		# Clean up all other auth codes for this user and purpose
+		# Find all auth codes for this user and purpose (including used ones)
+		cleanup_statement = select(AuthCode).where(
+			AuthCode.user_id == user.id, AuthCode.purpose == purpose
+		)
+
+		all_auth_codes = self.db.exec(cleanup_statement).all()
+
+		# Delete all auth codes except the one we just used
+		for auth_code in all_auth_codes:
+			if auth_code.id != matching_code.id:  # Keep the matching code marked as used
+				self.db.delete(auth_code)
+
+		security_logger.log_event(
+			'AUTH_CODE_CLEANUP',
+			success=True,
+			details={
+				'user_id': str(user.id),
+				'purpose': purpose,
+				'deleted_codes': len(all_auth_codes) - 1,  # Subtract the matching code
+			},
+		)
+
 		self.db.commit()
 
 		security_logger.log_event(
