@@ -13,7 +13,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Paper from '@mui/material/Paper';
 import Tooltip from '@mui/material/Tooltip';
 import { useTranslation } from 'react-i18next';
-import { Outlet, useLocation, useNavigate } from 'react-router';
+import { Navigate, Outlet, useLocation, useNavigate } from 'react-router';
+import { useAuth } from '../../hooks/useAuth';
 import useIsMobile from '../../hooks/useIsMobile';
 
 // ===============================
@@ -201,11 +202,14 @@ function AppLayout(): JSX.Element {
   const isMobile = useIsMobile();
   const navigate = useNavigate();
   const location = useLocation();
+  const { isLoggedIn } = useAuth();
 
   // Handle navigation menu item click
   const handleNavigation = (path: string) => {
     navigate(path);
   };
+
+  if (!isLoggedIn) return <Navigate to="/login" />;
 
   return (
     <Box className="flex h-screen flex-col">

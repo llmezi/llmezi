@@ -1,6 +1,14 @@
 import { useState } from 'react';
 
+// ===============================
+// Types and Interfaces
+// ===============================
+
 type SetValueFunction<T> = (value: T | ((prevValue: T) => T)) => void;
+
+// ===============================
+// Helper Utilities
+// ===============================
 
 /**
  * Helper functions to handle localStorage operations with smarter type handling
@@ -71,9 +79,17 @@ const localStorageUtils = {
   },
 };
 
+// ===============================
+// LocalStorage Hook Implementation
+// ===============================
+
 /**
  * A custom hook that provides localStorage functionality with proper typing
  * and smart serialization based on value types
+ *
+ * @param keyName - The key to use for storing the value in localStorage
+ * @param defaultValue - The default value to use if no value is found in localStorage
+ * @returns A tuple containing the stored value and a setter function
  */
 export const useLocalStorage = <T,>(keyName: string, defaultValue: T): [T, SetValueFunction<T>] => {
   const [storedValue, setStoredValue] = useState<T>(() => {

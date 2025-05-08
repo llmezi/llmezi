@@ -1,5 +1,17 @@
 import { gql, useQuery } from '@apollo/client';
 
+// ===============================
+// Types and Interfaces
+// ===============================
+
+interface FirstAdminCheckData {
+  isFirstAdminCreated: boolean;
+}
+
+// ===============================
+// GraphQL Queries
+// ===============================
+
 /**
  * GraphQL query to check if the first admin user has been created
  */
@@ -8,10 +20,6 @@ const IS_FIRST_ADMIN_CREATED = gql`
     isFirstAdminCreated
   }
 `;
-
-interface FirstAdminCheckData {
-  isFirstAdminCreated: boolean;
-}
 
 /**
  * Custom hook to check if the first admin user has been created.

@@ -3,6 +3,10 @@ import { gql, useMutation } from '@apollo/client';
 import { createContext, ReactNode, useContext, useMemo } from 'react';
 import { useLocalStorage } from './useLocalStorage';
 
+// ===============================
+// Types and Interfaces
+// ===============================
+
 interface AuthContextType {
   isLoggedIn: boolean;
   login: (credentials: {
@@ -13,11 +17,19 @@ interface AuthContextType {
   logout: () => void;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
 interface AuthProviderProps {
   children: ReactNode;
 }
+
+interface LoginCredentials {
+  accessToken: string;
+  refreshToken: string;
+  userId: string;
+}
+
+// ===============================
+// GraphQL Queries
+// ===============================
 
 const LOGOUT_MUTATION = gql`
   mutation Logout($refreshToken: String!) {
@@ -27,6 +39,12 @@ const LOGOUT_MUTATION = gql`
   }
 `;
 
+// ===============================
+// Auth Context Implementation
+// ===============================
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [accessToken, setAccessToken] = useLocalStorage<string | null>('accessToken', null);
   const [refreshToken, setRefreshToken] = useLocalStorage<string | null>('refreshToken', null);
@@ -34,24 +52,22 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const [logoutMutation] = useMutation(LOGOUT_MUTATION);
 
-  // call this function when you want to authenticate the user
-  const login = async ({
-    accessToken,
-    refreshToken,
-    userId,
-  }: {
-    accessToken: string;
-    refreshToken: string;
-    userId: string;
-  }): Promise<void> => {
+  /**
+   * Authenticate the user with the provided credentials
+   */
+  const login = async ({ accessToken, refreshToken, userId }: LoginCredentials): Promise<void> => {
     setAccessToken(accessToken);
     setRefreshToken(refreshToken);
     setUserId(userId);
   };
 
-  // call this function to sign out logged in user
+  /**
+   * Sign out the currently logged in user
+   */
   const logout = (): Promise<void> => {
-    logoutMutation({ variables: { refreshToken } });
+    if (refreshToken) {
+      logoutMutation({ variables: { refreshToken } });
+    }
 
     setAccessToken(null);
     setRefreshToken(null);
@@ -70,6 +86,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
+/**
+ * Custom hook to access the authentication context
+ * @returns Authentication context with login, logout and auth state
+ */
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
   if (context === undefined) {
