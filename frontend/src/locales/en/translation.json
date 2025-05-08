@@ -11,7 +11,9 @@
     "delete": "Delete",
     "edit": "Edit",
     "back": "Back",
-    "setting": "Setting"
+    "submit": "Submit",
+    "setting": "Setting",
+    "smtpNotReady": "The mail server is not ready for this operation, please check the configuration."
   },
   "theme": {
     "label": "Theme",
@@ -21,7 +23,9 @@
   },
   "auth": {
     "login": "Login",
-    "loginSubheader": "Please enter your credentials to continue.",
+    "loginSubheader": "You can log in using your password or request an OTP via email.",
+    "passwordLogin": "Password Login",
+    "otpLogin": "OTP Login",
     "loginError": "An error occurred during the login process.",
     "register": "Register",
     "registerSubheader": "Please create the first admin account to continue.",
@@ -35,6 +39,8 @@
     "password": "Password",
     "forgotPassword": "Forgot Password?",
     "loginSuccess": "Logged in successfully",
+    "requestOTP": "Request OTP",
+    "requestedOTP": "If your email address is in the system, you will receive an OTP shortly.",
     "validator": {
       "nameRequired": "Name is required",
       "emailRequired": "Email is required",

@@ -156,6 +156,10 @@ const getComponentsOverrides = (mode: 'light' | 'dark'): Components<Theme> => {
           fontSize: '1.125rem',
           fontWeight: 600,
         },
+        subheader: {
+          fontSize: '0.875rem',
+          color: tokens.textSecondary,
+        },
       },
     },
     MuiCardContent: {

@@ -116,7 +116,7 @@ function RegisterPage() {
         <CardContent>
           {!isFirstAdminCheckLoading && isFirstAdminCreated && (
             <Alert severity="warning" sx={{ mb: 2 }}>
-              <span className="mr-1">{t('auth.noNeedAdminWarning')}</span>
+              <p>{t('auth.noNeedAdminWarning')}</p>
               <Link href="/login" variant="body2">
                 {t('auth.noNeedAdminWarningLink')}
               </Link>
