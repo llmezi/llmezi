@@ -1,6 +1,5 @@
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import FolderCopyIcon from '@mui/icons-material/FolderCopy';
-import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import SettingsIcon from '@mui/icons-material/Settings';
 import Box from '@mui/material/Box';
@@ -50,7 +49,6 @@ interface BottomNavigationProps {
 const MENU_ITEMS: MenuItemType[] = [
   { path: '/', icon: <QuestionAnswerIcon />, label: 'home' },
   { path: '/documents', icon: <FolderCopyIcon />, label: 'documents' },
-  { path: '/images', icon: <PhotoLibraryIcon />, label: 'images' },
   { path: '/tools', icon: <AutoFixHighIcon />, label: 'tools' },
   { path: '/settings', icon: <SettingsIcon />, label: 'settings' },
 ];
