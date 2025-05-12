@@ -19,6 +19,7 @@ class Settings(BaseSettings):
 		extra='ignore',
 	)
 	ENVIRONMENT: Literal['local', 'staging', 'production'] = 'local'
+
 	JWT_ALGORITHM: str = 'HS256'
 	# run openssl rand -base64 32 to generate
 	JWT_SECRET: str = secrets.token_urlsafe(32)
@@ -30,8 +31,15 @@ class Settings(BaseSettings):
 	ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
 	# 60 minutes * 24 hours * 28 days
 	REFRESH_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 28
+
+	# run openssl rand -base64 32 to generate
+	CREDS_KEY: str = secrets.token_urlsafe(32)
+	# run openssl rand -base64 16 to generate
+	CREDS_IV: str = secrets.token_urlsafe(16)
+
 	# 15 minutes for OTP authentication codes
 	AUTH_CODE_EXPIRE_MINUTES: int = 15
+
 	# optional
 	SENTRY_DSN: HttpUrl | None = None
 

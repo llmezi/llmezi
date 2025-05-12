@@ -8,6 +8,7 @@ dependencies = [
     "alembic<2.0.0,>=1.15.2",
     # Pin bcrypt until passlib supports the latest version
     "bcrypt==4.0.1",
+    "cryptography<45.0.0,>=44.0.3",
     "fastapi[all]<1.0.0,>=0.115.12",
     "passlib[bcrypt]<2.0.0,>=1.7.4",
     "psycopg[binary]<4.0.0,>=3.2.7",
