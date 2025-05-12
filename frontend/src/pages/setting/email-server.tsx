@@ -157,7 +157,7 @@ function EmailServerSettingPage() {
       // Disable form if SMTP is already configured
       setFormDisabled(settings.isConfigured);
     }
-  }, [settingsData, formState]);
+  }, [settingsData]); // Removed formState from dependencies
 
   // Form handlers
   const handleInputChange = (field: string) => (e: React.ChangeEvent<HTMLInputElement>) => {

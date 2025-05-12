@@ -9,10 +9,10 @@ import { AlertProvider } from './hooks/useAlert';
 import { AuthProvider } from './hooks/useAuth';
 import { initializeApollo } from './libs/apolloClient';
 import theme from './libs/theme';
-import ForgotPasswordPage from './pages/forgot-password';
+import ForgotPasswordPage from './pages/auth/forgot-password';
+import LoginPage from './pages/auth/login';
+import RegisterPage from './pages/auth/register';
 import HomePage from './pages/home';
-import LoginPage from './pages/login';
-import RegisterPage from './pages/register';
 import EmailServerSettingPage from './pages/setting/email-server';
 import GeneralSettingPage from './pages/setting/general';
 
@@ -26,8 +26,8 @@ function App() {
       <CssBaseline />
       <BrowserRouter>
         <ApolloProvider client={apolloClient}>
-          <AuthProvider>
-            <AlertProvider>
+          <AlertProvider>
+            <AuthProvider>
               <Routes>
                 {/* Unauthenticated Routes */}
                 <Route element={<AuthLayout />}>
@@ -44,8 +44,8 @@ function App() {
                   </Route>
                 </Route>
               </Routes>
-            </AlertProvider>
-          </AuthProvider>
+            </AuthProvider>
+          </AlertProvider>
         </ApolloProvider>
       </BrowserRouter>
     </ThemeProvider>

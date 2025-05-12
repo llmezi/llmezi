@@ -63,6 +63,7 @@
     "resetPasswordSuccess": "Your password has been reset successfully.",
     "backToLogin": "Back to Login",
     "loginSuccess": "Logged in successfully",
+    "logoutSuccess": "Logged out successfully",
     "requestOTP": "Request OTP",
     "requestedOTP": "If your email address is in the system, you will receive an OTP shortly.",
     "validator": {

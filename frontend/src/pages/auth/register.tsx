@@ -14,9 +14,9 @@ import TextField from '@mui/material/TextField';
 import { useState } from 'react';
 import { TFunction, useTranslation } from 'react-i18next';
 import { HashLoader } from 'react-spinners';
-import { useAuth } from '../hooks/useAuth';
-import { useFirstAdminCheck } from '../hooks/useFirstAdminCheck';
-import { validateEmail, validateName, validatePassword } from '../libs/authValidator';
+import { useAuth } from '../../hooks/useAuth';
+import { useFirstAdminCheck } from '../../hooks/useFirstAdminCheck';
+import { validateEmail, validateName, validatePassword } from '../../libs/authValidator';
 
 // ===============================
 // Types and Interfaces

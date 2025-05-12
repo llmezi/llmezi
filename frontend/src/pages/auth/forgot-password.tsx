@@ -16,8 +16,8 @@ import { useState } from 'react';
 import { TFunction, useTranslation } from 'react-i18next';
 import { HashLoader } from 'react-spinners';
 // import { useNavigate } from 'react-router-dom';
-import { useSmtpCheck } from '../hooks/useSmtpCheck';
-import { validateEmail, validatePassword } from '../libs/authValidator';
+import { useSmtpCheck } from '../../hooks/useSmtpCheck';
+import { validateEmail, validatePassword } from '../../libs/authValidator';
 
 // ===============================
 // Types and Interfaces

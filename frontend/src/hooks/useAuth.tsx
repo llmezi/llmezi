@@ -1,6 +1,8 @@
-/* eslint-disable  react-hooks/exhaustive-deps, react-refresh/only-export-components */
+/* eslint-disable  react-refresh/only-export-components */
 import { gql, useMutation } from '@apollo/client';
 import { createContext, ReactNode, useContext, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useAlert } from './useAlert';
 import { useLocalStorage } from './useLocalStorage';
 
 // ===============================
@@ -46,6 +48,9 @@ const LOGOUT_MUTATION = gql`
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
+  const { showAlert } = useAlert();
+  const { t } = useTranslation();
+
   const [accessToken, setAccessToken] = useLocalStorage<string | null>('accessToken', null);
   const [refreshToken, setRefreshToken] = useLocalStorage<string | null>('refreshToken', null);
   const [userId, setUserId] = useLocalStorage<string | null>('userId', null);
@@ -59,6 +64,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setAccessToken(accessToken);
     setRefreshToken(refreshToken);
     setUserId(userId);
+
+    showAlert(t('auth.loginSuccess'), 'success');
   };
 
   /**
@@ -72,6 +79,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setAccessToken(null);
     setRefreshToken(null);
     setUserId(null);
+
+    showAlert(t('auth.logoutSuccess'), 'success');
   };
 
   const value = useMemo<AuthContextType>(
