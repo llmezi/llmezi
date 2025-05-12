@@ -149,7 +149,7 @@ function SettingLayout() {
   );
 
   return (
-    <Box sx={{ display: 'flex', height: '100%' }}>
+    <div className="my-12 flex h-screen">
       {/* Desktop permanent drawer */}
       {!isMobile && (
         <Drawer
@@ -229,7 +229,7 @@ function SettingLayout() {
           <Outlet />
         </div>
       </Box>
-    </Box>
+    </div>
   );
 }
 

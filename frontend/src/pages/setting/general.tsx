@@ -7,7 +7,7 @@ function GeneralSettingPage() {
   const { t } = useTranslation();
   return (
     <>
-      <Box sx={{ mb: 4, mt: 1 }}>
+      <Box sx={{ mb: 4 }}>
         <Typography variant="h4" component="h1">
           {t('menu.settingsMenu.general')}
         </Typography>

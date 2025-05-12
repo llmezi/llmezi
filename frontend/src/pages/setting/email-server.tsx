@@ -373,7 +373,7 @@ function EmailServerSettingPage() {
 
   return (
     <AdminOnlyComponent>
-      <Box sx={{ mb: 4, mt: 1 }}>
+      <Box sx={{ mb: 4 }}>
         <Typography variant="h4" component="h1">
           {t('smtp.settingsTitle')}
         </Typography>
