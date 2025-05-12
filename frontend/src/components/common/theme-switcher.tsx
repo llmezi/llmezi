@@ -19,7 +19,7 @@ function ThemeSwitcher() {
         display: 'flex',
         width: '100%',
         alignItems: 'center',
-        justifyContent: 'center',
+        // justifyContent: 'center',
         p: 3,
       }}
     >

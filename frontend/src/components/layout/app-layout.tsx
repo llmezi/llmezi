@@ -48,15 +48,15 @@ interface BottomNavigationProps {
  */
 const MENU_ITEMS: MenuItemType[] = [
   { path: '/', icon: <QuestionAnswerIcon />, label: 'home' },
-  { path: '/documents', icon: <FolderCopyIcon />, label: 'documents' },
-  { path: '/tools', icon: <AutoFixHighIcon />, label: 'tools' },
-  { path: '/settings', icon: <SettingsIcon />, label: 'settings' },
+  { path: '/document', icon: <FolderCopyIcon />, label: 'documents' },
+  { path: '/tool', icon: <AutoFixHighIcon />, label: 'tools' },
+  { path: '/setting', icon: <SettingsIcon />, label: 'settings' },
 ];
 
 /**
  * Drawer width for desktop
  */
-const DRAWER_WIDTH = 72;
+export const DRAWER_WIDTH = 72;
 
 // ===============================
 // Helper Components
@@ -70,6 +70,19 @@ function SideMenu({ items, currentPath, onNavigate, t }: SideMenuProps): JSX.Ele
   const settingsItem = items[items.length - 1];
   // Get all other menu items
   const mainMenuItems = items.slice(0, items.length - 1);
+
+  /**
+   * Check if menu item is active based on current path
+   * Top menu item (home) uses exact matching, other items check if current path starts with item path
+   */
+  const isMenuItemActive = (itemPath: string) => {
+    // Home page uses exact matching
+    if (itemPath === '/') {
+      return currentPath === itemPath;
+    }
+    // Other pages check if current path starts with item path
+    return currentPath.startsWith(itemPath);
+  };
 
   return (
     <Drawer
@@ -95,7 +108,7 @@ function SideMenu({ items, currentPath, onNavigate, t }: SideMenuProps): JSX.Ele
           <ListItem key={item.path} disablePadding sx={{ display: 'block', my: 1 }}>
             <Tooltip title={t(`menu.${item.label}`)} placement="right">
               <ListItemButton
-                selected={currentPath === item.path}
+                selected={isMenuItemActive(item.path)}
                 onClick={() => onNavigate(item.path)}
                 sx={{
                   justifyContent: 'center',
@@ -113,7 +126,7 @@ function SideMenu({ items, currentPath, onNavigate, t }: SideMenuProps): JSX.Ele
                   sx={{
                     minWidth: 0,
                     justifyContent: 'center',
-                    color: currentPath === item.path ? 'inherit' : 'text.primary',
+                    color: isMenuItemActive(item.path) ? 'inherit' : 'text.primary',
                   }}
                 >
                   {item.icon}
@@ -130,7 +143,7 @@ function SideMenu({ items, currentPath, onNavigate, t }: SideMenuProps): JSX.Ele
         <ListItem disablePadding sx={{ display: 'block', my: 1 }}>
           <Tooltip title={t(`menu.${settingsItem.label}`)} placement="right">
             <ListItemButton
-              selected={currentPath === settingsItem.path}
+              selected={isMenuItemActive(settingsItem.path)}
               onClick={() => onNavigate(settingsItem.path)}
               sx={{
                 justifyContent: 'center',
@@ -148,7 +161,7 @@ function SideMenu({ items, currentPath, onNavigate, t }: SideMenuProps): JSX.Ele
                 sx={{
                   minWidth: 0,
                   justifyContent: 'center',
-                  color: currentPath === settingsItem.path ? 'inherit' : 'text.primary',
+                  color: isMenuItemActive(settingsItem.path) ? 'inherit' : 'text.primary',
                 }}
               >
                 {settingsItem.icon}
@@ -223,8 +236,8 @@ function AppLayout(): JSX.Element {
 
       {/* Main content */}
       <Box
-        component="main"
-        className="flex-grow overflow-auto p-3"
+        // component="main"
+        className="flex-grow overflow-auto p-2"
         sx={{
           width: { sm: `calc(100% - ${DRAWER_WIDTH}px)` },
           ml: { sm: `${DRAWER_WIDTH}px` },

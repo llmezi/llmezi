@@ -13,7 +13,11 @@
     "back": "Back",
     "submit": "Submit",
     "setting": "Setting",
-    "smtpNotReady": "The mail server is not ready for this operation, please check the configuration."
+    "smtpNotReady": "The mail server is not ready for this operation, please check the configuration.",
+    "remove": "Remove",
+    "processing": "Processing...",
+    "skip": "Skip",
+    "errorLoading": "Error loading data. Please try again."
   },
   "theme": {
     "label": "Theme",
@@ -26,7 +30,11 @@
     "documents": "Documents",
     "images": "Images",
     "tools": "Tools",
-    "settings": "Settings"
+    "settings": "Settings",
+    "settingsMenu": {
+      "general": "General Settings",
+      "emailServer": "Email Server (SMTP)"
+    }
   },
   "auth": {
     "login": "Login",
@@ -70,5 +78,37 @@
   "home": {
     "welcome": "Welcome to LLMeZi",
     "getStarted": "Get Started"
+  },
+  "smtp": {
+    "settingsTitle": "Email Server Settings",
+    "configureSmtp": "Configure SMTP Server",
+    "configureSmtpDescription": "Set up your email server to enable email notifications and email-based authentication.",
+    "host": "SMTP Host",
+    "port": "SMTP Port",
+    "username": "SMTP Username",
+    "password": "SMTP Password",
+    "useTls": "Use TLS",
+    "useSsl": "Use SSL",
+    "fromEmail": "From Email",
+    "fromName": "From Name (Optional)",
+    "testEmailTitle": "Send Test Email",
+    "testEmailDescription": "Send a test email to verify your SMTP configuration is working correctly.",
+    "sendTestEmail": "Send Test Email",
+    "recipientEmail": "Recipient Email",
+    "testEmailSubject": "SMTP Test Email",
+    "deleteConfirmTitle": "Remove SMTP Settings",
+    "deleteConfirmMessage": "Are you sure you want to remove the SMTP server settings? This will disable all email functionality including email notifications and email-based authentication.",
+    "configuredStatus": "SMTP Server Configured",
+    "configurationSaved": "SMTP configuration saved successfully",
+    "configurationRemoved": "SMTP configuration removed successfully",
+    "testEmailSent": "Test email sent successfully",
+    "sendTest": "Send Test",
+    "hostRequired": "SMTP host is required",
+    "portRequired": "SMTP port is required",
+    "invalidPort": "Please enter a valid port number",
+    "usernameRequired": "SMTP username is required",
+    "passwordRequired": "SMTP password is required",
+    "fromEmailRequired": "From email address is required",
+    "invalidEmail": "Please enter a valid email address"
   }
 }
