@@ -5,7 +5,9 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from typing import Dict, List, Optional
 
-from app.core.config import settings
+from sqlmodel import Session
+
+from app.services.credential_service import CredentialService
 
 logger = logging.getLogger(__name__)
 
@@ -18,18 +20,109 @@ class EmailService:
 	- Checking SMTP server connectivity
 	- Sending plain text and HTML emails
 	- Managing email templates
+
+	This service retrieves SMTP configuration exclusively from the database using the CredentialService.
 	"""
 
-	def __init__(self):
-		"""Initialize the Email Service with configuration from settings."""
-		self.host = settings.SMTP_HOST
-		self.port = settings.SMTP_PORT
-		self.username = settings.SMTP_USER
-		self.password = settings.SMTP_PASSWORD
-		self.use_tls = settings.SMTP_TLS
-		self.use_ssl = settings.SMTP_SSL
-		self.from_email = settings.EMAILS_FROM_EMAIL
-		self.from_name = settings.EMAILS_FROM_NAME
+	def __init__(self, db: Session):
+		"""
+		Initialize the Email Service with configuration from credentials in database.
+
+		Args:
+		    db: Database session for retrieving credentials (required).
+
+		Raises:
+		    ValueError: If database session is not provided.
+		"""
+		if db is None:
+			raise ValueError('Database session is required for EmailService')
+
+		self.db = db
+		self.credential_service = CredentialService(db)
+
+		# Initialize with default empty values
+		self._host = None
+		self._port = 587  # Default SMTP port if not specified
+		self._username = None
+		self._password = None
+		self._use_tls = True
+		self._use_ssl = False
+		self._from_email = None
+		self._from_name = None
+
+		# Load credentials from database
+		self._load_credentials_from_db()
+
+	def _load_credentials_from_db(self):
+		"""Load email configuration from credentials stored in the database."""
+		# Get each credential with the same keys as previously used
+		host = self.credential_service.get_credential_value('SMTP_HOST')
+		if host:
+			self._host = host
+
+		port_str = self.credential_service.get_credential_value('SMTP_PORT')
+		if port_str and port_str.isdigit():
+			self._port = int(port_str)
+
+		username = self.credential_service.get_credential_value('SMTP_USER')
+		if username:
+			self._username = username
+
+		password = self.credential_service.get_credential_value('SMTP_PASSWORD')
+		if password:
+			self._password = password
+
+		tls_str = self.credential_service.get_credential_value('SMTP_TLS')
+		if tls_str:
+			self._use_tls = tls_str.lower() in ('true', '1', 'yes')
+
+		ssl_str = self.credential_service.get_credential_value('SMTP_SSL')
+		if ssl_str:
+			self._use_ssl = ssl_str.lower() in ('true', '1', 'yes')
+
+		from_email = self.credential_service.get_credential_value('EMAILS_FROM_EMAIL')
+		if from_email:
+			self._from_email = from_email
+
+		from_name = self.credential_service.get_credential_value('EMAILS_FROM_NAME')
+		if from_name:
+			self._from_name = from_name
+
+	@property
+	def host(self) -> Optional[str]:
+		return self._host
+
+	@property
+	def port(self) -> int:
+		return self._port
+
+	@property
+	def username(self) -> Optional[str]:
+		return self._username
+
+	@property
+	def password(self) -> Optional[str]:
+		return self._password
+
+	@property
+	def use_tls(self) -> bool:
+		return self._use_tls
+
+	@property
+	def use_ssl(self) -> bool:
+		return self._use_ssl
+
+	@property
+	def from_email(self) -> Optional[str]:
+		return self._from_email
+
+	@property
+	def from_name(self) -> Optional[str]:
+		return self._from_name
+
+	def refresh_credentials(self):
+		"""Reload credentials from the database."""
+		self._load_credentials_from_db()
 
 	def is_configured(self) -> bool:
 		"""

@@ -54,7 +54,7 @@ class AuthService:
 		self.db = db
 		# Using bcrypt directly with rounds parameter to avoid passlib bcrypt version issues
 		self.pwd_context = CryptContext(schemes=['bcrypt'], deprecated='auto', bcrypt__rounds=12)
-		self.email_service = EmailService()
+		self.email_service = EmailService(db)
 		# Secret key for HMAC token operations
 		self._token_secret = settings.JWT_SECRET.encode('utf-8')
 		self._max_refresh_tokens_per_user = 10

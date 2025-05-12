@@ -1,17 +1,22 @@
 from datetime import datetime, timedelta
 from typing import Optional
 
+from sqlmodel import Session
+
 from app.services.email_service import EmailService
 
 
 class SMTPStatusCache:
 	"""Cache for SMTP status to avoid frequent connection checks"""
 
-	def __init__(self, cache_ttl_seconds: int = 300):  # 5 minutes cache by default
+	def __init__(
+		self, db: Optional[Session] = None, cache_ttl_seconds: int = 300
+	):  # 5 minutes cache by default
 		self.status: Optional[bool] = None
 		self.last_check: Optional[datetime] = None
 		self.cache_ttl = timedelta(seconds=cache_ttl_seconds)
-		self._email_service = EmailService()
+		self.db = db
+		self._email_service = EmailService(db)
 
 	def get_status(self) -> bool:
 		"""Get cached status or check SMTP connection if cache expired"""
@@ -23,7 +28,3 @@ class SMTPStatusCache:
 			self.last_check = current_time
 
 		return self.status
-
-
-# Create a singleton instance of the cache
-smtp_cache = SMTPStatusCache()
