@@ -1,7 +1,8 @@
 from logging.config import fileConfig
-
-from sqlalchemy import engine_from_config
+import re
+from sqlalchemy import engine_from_config, create_engine
 from sqlalchemy import pool
+from sqlalchemy_utils import database_exists, create_database
 from app.core.config import settings
 from alembic import context
 from sqlmodel import SQLModel
@@ -38,6 +39,21 @@ def get_url():
 	return str(settings.SQLALCHEMY_DATABASE_URI)
 
 
+def check_and_create_database():
+	"""Check if database exists and create it if it doesn't."""
+	url = get_url()
+	engine = create_engine(url)
+
+	if not database_exists(engine.url):
+		print(f"Database does not exist. Creating database at {engine.url}")
+		create_database(engine.url)
+		print("Database created successfully!")
+	else:
+		print(f"Database already exists at {engine.url}")
+
+	engine.dispose()
+
+
 def run_migrations_offline() -> None:
 	"""Run migrations in 'offline' mode.
 
@@ -69,6 +85,9 @@ def run_migrations_online() -> None:
 	and associate a connection with the context.
 
 	"""
+	# Check and create database if it doesn't exist
+	check_and_create_database()
+
 	configuration = config.get_section(config.config_ini_section)
 	configuration['sqlalchemy.url'] = get_url()
 	connectable = engine_from_config(
