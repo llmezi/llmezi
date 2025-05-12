@@ -87,3 +87,45 @@ def get_password_reset_email(user_name: str, code: str, expires_minutes: int) ->
     """
 
 	return html_content, text_content
+
+
+def get_test_email() -> tuple[str, str]:
+	"""
+	Generate HTML and plain text templates for test emails.
+
+	Used to verify SMTP settings are working correctly.
+
+	Returns:
+	    tuple[str, str]: A tuple containing (html_content, text_content)
+	"""
+	# HTML version
+	html_content = """
+    <html>
+        <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+            <div style="max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 5px;">
+                <h2 style="color: #4CAF50;">SMTP Test Email</h2>
+                <p>This is a test email to verify that your SMTP settings are configured correctly.</p>
+                <div style="background-color: #f5f5f5; padding: 15px; border-left: 4px solid #4CAF50; margin: 20px 0;">
+                    <p style="margin: 0;">If you are receiving this email, it means that your email server is working properly!</p>
+                </div>
+                <p style="color: #777; font-size: 14px; margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
+                    This is an automated test message. Please do not reply to this email.
+                </p>
+            </div>
+        </body>
+    </html>
+    """
+
+	# Plain text version
+	text_content = """
+    SMTP Test Email
+
+    This is a test email to verify that your SMTP settings are configured correctly.
+
+    If you are receiving this email, it means that your email server is working properly!
+
+    ---
+    This is an automated test message. Please do not reply to this email.
+    """
+
+	return html_content, text_content
